@@ -40,7 +40,7 @@ public abstract class MonthAdapter {
 	 * @param mYear 当前日历显示所处的年
 	 * @param mMonth 当前日历显示所处的月
 	 */
-	public void onDayChecked(MonthCellView cell, Date time, final int mYear, final int mMonth){}
+	public void onCellClicked(MonthCellView cell, Date time, final int mYear, final int mMonth){}
 
 	/**获取标题布局中某一个标题
 	 * @param inflater

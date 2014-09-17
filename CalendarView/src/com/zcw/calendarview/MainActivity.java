@@ -16,7 +16,7 @@ import com.zcw.widget.MonthAdapter;
 import com.zcw.widget.MonthCellView;
 import com.zcw.widget.MonthContentView;
 import com.zcw.widget.MonthTitleView;
-import com.zcw.widget.MonthCellView.CELL_STATE;
+import com.zcw.widget.MonthCellView.CellType;
 
 /**
  * @author ThinkPad
@@ -39,6 +39,8 @@ public class MainActivity extends Activity {
 		monthView = (MonthContentView) findViewById(R.id.monthView1);
 		adapter = new MyMonthAdapter();
 		monthView.setAdapter(adapter);
+		//monthView.setCheckable(true);
+		
 		
 		MonthTitleView titleView  = (MonthTitleView) findViewById(R.id.monthTitleView1);
 		titleView.setAdapter(adapter);
@@ -71,15 +73,25 @@ public class MainActivity extends Activity {
 		public void updateCell(MonthCellView child, int index, Date time, int mYear, int mMonth) {
 			child.setDay(time, mYear, mMonth);
 			
-			if(index == 9){
-				child.setState(CELL_STATE.DISABLED);
+			//fake work data...
+			MyMonthCellView mcell = (MyMonthCellView) child;
+			boolean hasWork = false;
+			if(child.getCellMonth() == mMonth){
+				int ran = (int) (Math.random() * 100);
+				hasWork = ran < 30;
 			}
+			mcell.setIsWork(hasWork);
+			mcell.setEnabled(! hasWork);
 		}
 		
 		@Override
-		public void onDayChecked(MonthCellView cell, Date time, final int mYear, final int mMonth){
+		public void onCellClicked(MonthCellView cell, Date time, final int mYear, final int mMonth){
 			if(cell.getCellYear() != mYear || cell.getCellMonth() != mMonth){
 				monthView.setDate(time.getTime());
+			}else{
+				MyMonthCellView mcell = (MyMonthCellView) cell;
+				mcell.setDisabled(! mcell.isDisabled());
+				//cell.setState(state == CELL_STATE.DISABLED ? state : CELL_STATE.DISABLED);
 			}
 		}
 		

@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import com.zcw.widget.MonthCellView.CellType;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -31,7 +33,7 @@ public abstract class MonthCellView extends ViewGroup implements Checkable{
 	
 	private Date time;
 	private boolean checked = false;
-	private CELL_STATE mState;
+	private CellType mCellType;
 	private int cellYear;
 	private int cellMonth;
 	private int cellDay;
@@ -119,11 +121,11 @@ public abstract class MonthCellView extends ViewGroup implements Checkable{
 		cellDay = calendar.get(Calendar.DAY_OF_MONTH);
 		
     	if(cellYear == currentYear && cellMonth == currentMonth && cellDay == currentDay){
-			setState(CELL_STATE.TODAY);
+			setCellType(CellType.TODAY);
 		}else if(mYear != cellYear || mMonth != cellMonth){
-			setState(CELL_STATE.OVERDUE);
+			setCellType(CellType.OUT_MONTH);
 		}else{
-			setState(CELL_STATE.NORMAL);
+			setCellType(CellType.IN_MONTH);
 		}
     	onDayChenged(time, mYear, mMonth);
 	};
@@ -136,29 +138,27 @@ public abstract class MonthCellView extends ViewGroup implements Checkable{
 	public void onDayChenged(Date time, int mYear, int mMonth){};
 	
 	/**
-	 * @param state
+	 * @param cellType
 	 */
-	public final void setState(CELL_STATE state) {
-		CELL_STATE oldState = mState;
-		mState = state;
-		onStateChanged(oldState, state);
+	public final void setCellType(CellType cellType) {
+		CellType oldCellType = mCellType;
+		mCellType = cellType;
+		onCellTypeChanged(oldCellType, cellType);
 	}
 	
 	/**
-	 * @param oldState
-	 * @param newState
+	 * @param oldCellType
+	 * @param newCellType
 	 */
-	public void onStateChanged(CELL_STATE oldState, CELL_STATE newState){};
+	public void onCellTypeChanged(CellType oldCellType, CellType newCellType){};
 
 	/**
 	 * @author ThinkPad
-	 *
 	 */
-	public enum CELL_STATE{
-		DISABLED,
-		NORMAL,
+	public enum CellType{
+		IN_MONTH,
 		TODAY,
-		OVERDUE,
+		OUT_MONTH,
 		;
 	}
 
@@ -214,6 +214,9 @@ public abstract class MonthCellView extends ViewGroup implements Checkable{
 	}
 	public void setCellDay(int cellDay) {
 		this.cellDay = cellDay;
+	}
+	public CellType getCellType() {
+		return mCellType;
 	}
     
     

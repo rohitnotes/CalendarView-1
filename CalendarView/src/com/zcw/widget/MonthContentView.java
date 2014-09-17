@@ -24,6 +24,7 @@ public class MonthContentView extends ViewGroup{
 	private MonthAdapter adapter;
 	private int mYear;
 	private int mMonth;
+	private boolean checkable;
 	
 	public MonthContentView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -134,13 +135,25 @@ public class MonthContentView extends ViewGroup{
 		public void onClick(View cellView) {
 			final MonthCellView cell = (MonthCellView) cellView;
 			
-			int childCount = getChildCount();
-		    for (int i = 0; i < childCount; i++) {
-		    	final MonthCellView child = (MonthCellView) getChildAt(i);
-		    	child.setChecked(false);
-		    }
-			cell.setChecked(true);
-			adapter.onDayChecked(cell, cell.getDay(), mYear, mMonth);
+			if(checkable){
+				int childCount = getChildCount();
+			    for (int i = 0; i < childCount; i++) {
+			    	final MonthCellView child = (MonthCellView) getChildAt(i);
+			    	child.setChecked(false);
+			    }
+				cell.setChecked(true);
+			}
+			
+			adapter.onCellClicked(cell, cell.getDay(), mYear, mMonth);
 		}
 	};
+
+	
+	public boolean isCheckable() {
+		return checkable;
+	}
+	public void setCheckable(boolean checkable) {
+		this.checkable = checkable;
+	}
+	
 }

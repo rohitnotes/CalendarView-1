@@ -550,7 +550,7 @@ public class StyledGradientDrawable extends Drawable {
         mFillPaint.setColor(argb);
         invalidateSelf();
     }
-
+    
     @Override
     public int getChangingConfigurations() {
         return super.getChangingConfigurations() | mGradientState.mChangingConfigurations;
@@ -620,9 +620,9 @@ public class StyledGradientDrawable extends Drawable {
             }
 
             final GradientState st = mGradientState;
-
-            mRect.set(bounds.left + inset, bounds.top + inset,
-                      bounds.right - inset, bounds.bottom - inset);
+            //changed mRect bounds , mPadding
+            mRect.set(bounds.left + inset + mPadding.left, bounds.top + inset + mPadding.top,
+                      bounds.right - inset - mPadding.right, bounds.bottom - inset - mPadding.bottom);
 
             final int[] colors = st.mColors;
             if (colors != null) {
@@ -1222,6 +1222,12 @@ public class StyledGradientDrawable extends Drawable {
     /********************************************
      * 自定义方法
      ********************************************/
+    /**
+     * @return
+     */
+    public int getColor(){
+    	return mFillPaint.getColor();
+    }
     
     /**
 	 * @param tl
