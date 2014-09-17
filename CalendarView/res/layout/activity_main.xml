@@ -25,19 +25,18 @@
 	        
     </LinearLayout>
 
-    <com.zcw.MonthTitleView
+    <com.zcw.widget.MonthTitleView
         android:id="@+id/monthTitleView1"
         android:paddingTop="20dp"
         android:paddingBottom="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
-    </com.zcw.MonthTitleView>
-
-    <com.zcw.MonthContentView
+    </com.zcw.widget.MonthTitleView>
+	<com.zcw.widget.MonthContentView
         android:id="@+id/monthView1"
         android:padding="0px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    </com.zcw.MonthContentView>
+    </com.zcw.widget.MonthContentView>
 
 </LinearLayout>

@@ -2,25 +2,21 @@ package com.zcw.calendarview;
 
 import java.util.Calendar;
 import java.util.Date;
-import android.annotation.SuppressLint;
+
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+
 import com.zcw.FontManager;
 import com.zcw.FontManager.Fonts;
-import com.zcw.DpUtil;
-import com.zcw.MonthAdapter;
-import com.zcw.MonthCellView;
-import com.zcw.MonthCellView.CELL_STATE;
-import com.zcw.MonthContentView;
-import com.zcw.MonthTitleView;
-import com.zcw.drawable.StyledGradientDrawable;
+import com.zcw.widget.MonthAdapter;
+import com.zcw.widget.MonthCellView;
+import com.zcw.widget.MonthContentView;
+import com.zcw.widget.MonthTitleView;
+import com.zcw.widget.MonthCellView.CELL_STATE;
 
 /**
  * @author ThinkPad
@@ -31,8 +27,6 @@ public class MainActivity extends Activity {
 	private TextView textYearMonth;
 	
 	
-	@SuppressLint("NewApi")
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

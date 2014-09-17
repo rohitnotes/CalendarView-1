@@ -14,7 +14,8 @@ import android.widget.TextView;
 
 import com.zcw.FontManager;
 import com.zcw.FontManager.Fonts;
-import com.zcw.MonthCellView;
+import com.zcw.drawable.StyledGradientDrawable;
+import com.zcw.widget.MonthCellView;
 
 /**
  * @author ThinkPad
@@ -55,6 +56,14 @@ public class MyMonthCellView  extends MonthCellView{
 		textDay.setText(sdf.format(time));
 	}
 	
+	static StyledGradientDrawable disabledDrawable;
+	static{
+		disabledDrawable = new StyledGradientDrawable();
+		disabledDrawable.setColor(Color.parseColor("#d45270"));
+		disabledDrawable.setCornerRadii(true, true, true, true);
+		
+	}
+	
 	public void onStateChanged(CELL_STATE oldState, CELL_STATE state){
 		setEnabled(state != CELL_STATE.DISABLED);
 		imageDot.setVisibility(state == CELL_STATE.DISABLED ? View.VISIBLE : View.GONE);
@@ -65,7 +74,8 @@ public class MyMonthCellView  extends MonthCellView{
 //			setBackgroundColor(disabledBgColor);
 //			textDay.setTextColor(Color.BLACK);
 			textDay.setTextColor(Color.WHITE);
-			setBackgroundResource(R.drawable.month_cell_disabled_normal);
+			//setBackgroundResource(R.drawable.month_cell_disabled_normal);
+			setBackgroundDrawable(disabledDrawable);
 			break;
 		case NORMAL:
 //			setBackgroundColor(Color.WHITE);
@@ -80,6 +90,7 @@ public class MyMonthCellView  extends MonthCellView{
 //			final int overdueDayColor = Color.parseColor("#888888");
 			final int overdueDayColor = Color.parseColor("#bbbbbb");
 			textDay.setTextColor(overdueDayColor);
+			setBackgroundDrawable(null);
 			break;
 		case TODAY:
 //			final int todayBgColor = Color.parseColor("#4EBB7F");
