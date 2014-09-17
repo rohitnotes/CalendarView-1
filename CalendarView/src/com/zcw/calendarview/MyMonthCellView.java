@@ -23,8 +23,12 @@ import com.zcw.widget.MonthCellView;
  */
 public class MyMonthCellView extends MonthCellView{
 	private static SimpleDateFormat sdf = new SimpleDateFormat("d", Locale.getDefault());
+	
+	static CellMode cellMode = CellMode.EDIT_DISABLE;
+	
 	private TextView textDay;
 	private ImageView imageDot;
+	
 	
 	public MyMonthCellView(Context context, AttributeSet attrs,
 			int defStyleAttr) {
@@ -57,12 +61,18 @@ public class MyMonthCellView extends MonthCellView{
 	}
 	
 	static StyledGradientDrawable disabledDrawable;
+	static StyledGradientDrawable todayDrawable;
+	
 	static{//#d45270
 		disabledDrawable = new StyledGradientDrawable();
-		disabledDrawable.setColor(Color.WHITE & 0x22ffffff);
+		disabledDrawable.setColor(0x22ffffff);
 		disabledDrawable.setCornerRadii(true, true, true, true);
 		disabledDrawable.setPadding(10);
 		
+		todayDrawable = new StyledGradientDrawable();
+		todayDrawable.setCornerRadii(true, true, true, true);
+		todayDrawable.setPadding(10);
+		todayDrawable.setStroke(2, Color.WHITE);
 	}
 	
 	boolean disabled;
@@ -73,14 +83,14 @@ public class MyMonthCellView extends MonthCellView{
 	}
 	public void setIsWork(boolean isWork) {
 		this.isWork = isWork;
-		applyDisplay();
+		//applyDisplay();
 	}
 	public boolean isDisabled() {
 		return disabled;
 	}
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
-		applyDisplay();
+		//applyDisplay();
 	}
 	
 	public void onCellTypeChanged(CellType oldState, CellType state){
@@ -93,31 +103,24 @@ public class MyMonthCellView extends MonthCellView{
 		imageDot.setVisibility(isWork ? View.VISIBLE : View.GONE);
 		
 		if(disabled){
-			textDay.setTextColor(Color.WHITE & 0x33ffffff);
+			textDay.setTextColor(0x33ffffff);
 			setBackgroundDrawable(disabledDrawable);
 		}else{
 			switch (cellType) {
 			case IN_MONTH:
-//				setBackgroundColor(Color.WHITE);
-//				final int normalDayColor = Color.parseColor("#666666");
 //				textDay.setTextColor(normalDayColor);
 				textDay.setTextColor(Color.WHITE);
 				setBackgroundResource(R.drawable.month_cell_normal_selector);
 				break;
 			case OUT_MONTH:
-//				final int overdueBgColor = Color.parseColor("#EEEEEE");
-//				setBackgroundColor(overdueBgColor);
-//				final int overdueDayColor = Color.parseColor("#888888");
-				final int overdueDayColor = Color.parseColor("#bbbbbb");
+				final int overdueDayColor = 0xffbbbbbb;
 				textDay.setTextColor(overdueDayColor);
 				setBackgroundDrawable(null);
 				break;
 			case TODAY:
-//				final int todayBgColor = Color.parseColor("#4EBB7F");
-//				setBackgroundColor(todayBgColor);
-				setBackgroundResource(R.drawable.month_cell_today_selector);
+//				setBackgroundResource(R.drawable.month_cell_today_selector);
 				textDay.setTextColor(Color.WHITE);
-//				textDay.setTypeface(Typeface.DEFAULT_BOLD);
+				setBackgroundDrawable(todayDrawable);
 				break;
 			default:
 				break;
@@ -125,4 +128,9 @@ public class MyMonthCellView extends MonthCellView{
 		}
 	}
 
+	
+	public enum CellMode{
+		NORMAL,
+		EDIT_DISABLE,
+	}
 }

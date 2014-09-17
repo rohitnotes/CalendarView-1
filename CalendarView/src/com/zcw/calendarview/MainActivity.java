@@ -8,7 +8,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Window;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.zcw.FontManager;
 import com.zcw.FontManager.Fonts;
@@ -16,7 +19,6 @@ import com.zcw.widget.MonthAdapter;
 import com.zcw.widget.MonthCellView;
 import com.zcw.widget.MonthContentView;
 import com.zcw.widget.MonthTitleView;
-import com.zcw.widget.MonthCellView.CellType;
 
 /**
  * @author ThinkPad
@@ -26,6 +28,7 @@ public class MainActivity extends Activity {
 	private MyMonthAdapter adapter;
 	private TextView textYearMonth;
 	
+	MonthMode mode = MonthMode.EDIT_DISABLE;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,21 @@ public class MainActivity extends Activity {
 		
 		textYearMonth.setTypeface(FontManager.getInstance().getTypeface(Fonts.BARIOL_REGULAR));
 		
+		
+		ToggleButton toggle = (ToggleButton)findViewById(R.id.toggleButton1);
+		toggle.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean on) {
+				if(on){
+					monthView.setCheckable(false);
+					mode = MonthMode.EDIT_DISABLE;
+				}else{
+					monthView.setCheckable(true);
+					mode = MonthMode.NORMAL;
+				}
+				monthView.notifyCellChanged();
+			}
+		});
 	}
 	
 	/**
@@ -81,22 +99,35 @@ public class MainActivity extends Activity {
 				hasWork = ran < 30;
 			}
 			mcell.setIsWork(hasWork);
-			mcell.setEnabled(! hasWork);
+			if(mode == MonthMode.EDIT_DISABLE){
+				mcell.setEnabled(! hasWork);
+			}
+			mcell.applyDisplay();
 		}
 		
 		@Override
 		public void onCellClicked(MonthCellView cell, Date time, final int mYear, final int mMonth){
 			if(cell.getCellYear() != mYear || cell.getCellMonth() != mMonth){
 				monthView.setDate(time.getTime());
-			}else{
+			}else if(mode == MonthMode.EDIT_DISABLE){
 				MyMonthCellView mcell = (MyMonthCellView) cell;
 				mcell.setDisabled(! mcell.isDisabled());
-				//cell.setState(state == CELL_STATE.DISABLED ? state : CELL_STATE.DISABLED);
+				mcell.applyDisplay();
+			}else{
+				MyMonthCellView mcell = (MyMonthCellView) cell;
+				mcell.setDisabled(false);
+				mcell.applyDisplay();
 			}
 		}
 		
 		public void onMonthChanged(MonthContentView monthContentView, long date, int mYear, int mMonth) {
 			textYearMonth.setText(mYear + " • " + (mMonth + 1));
 		};
+	}
+	
+	
+	public enum MonthMode{
+		NORMAL,
+		EDIT_DISABLE,
 	}
 }
